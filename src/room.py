@@ -1,20 +1,41 @@
 # Implement a class to hold room information. This should have name and
 # description attributes.
 
-# n_to, s_to, e_to, w_to
-
 
 class Room:
-    def __init__(self, name, desc, items, n_to, s_to, e_to, w_to):
+    def __init__(self, name, desc):
         self.name = name
         self.desc = desc
-        self.items = items
-        self.n_to = n_to
-        self.s_to = s_to
-        self.e_to = e_to
-        self.w_to = w_to
+        self.items = []
+        self.n_to = None
+        self.s_to = None
+        self.e_to = None
+        self.w_to = None
 
-    def __str__(self):
-        return f"From Room class: name is {self.name}, description is {self.desc}"
+    def __repr__(self):
+        returnString = f"---------------\n\n{self.name}\n\n  {self.desc}\n\n---------------"
+        returnString += f"\n\n[{self.getRoomExitString()}]\n\n"
+        return returnString
 
-# , North: {self.n_to}, North: {self.n_to}, South: {self.s_to}, East: {self.e_to}, West: {self.w_to}"
+    def getRoomInDirection(self, direction):
+        if direction == "n":
+            return self.n_to
+        if direction == "s":
+            return self.s_to
+        if direction == "e":
+            return self.e_to
+        if direction == "w":
+            return self.w_to
+        return None
+
+    def getRoomExitString(self):
+        exits = []
+        if self.n_to is not None:
+            exits.append("n")
+        if self.s_to is not None:
+            exits.append("s")
+        if self.e_to is not None:
+            exits.append("e")
+        if self.w_to is not None:
+            exits.append("w")
+        return ", ".join(exits)

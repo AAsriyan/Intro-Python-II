@@ -14,4 +14,24 @@ class Player:
             self.currentRoom = nextRoom
             print(self.currentRoom)
         else:
-            print("You cannot move in that direction.")
+            print("\nYou cannot move in that direction.\n")
+
+    def addItemToPlayer(self, inputItem):
+        roomItems = self.currentRoom.items
+        for item in roomItems:
+            if item.name == inputItem:
+                self.items.append(item)
+                roomItems.remove(item)
+                item.onTake()
+                return None
+        print(f"\n{inputItem} is not in {self.currentRoom.name}\n")
+
+    def dropItemFromPlayer(self, inputItem):
+        roomItems = self.currentRoom.items
+        for item in self.items:
+            if item.name == inputItem:
+                self.items.remove(item)
+                roomItems.append(item)
+                item.onDrop()
+                return None
+        print(f"\n{inputItem} is not in {self.name}'s inventory\n")

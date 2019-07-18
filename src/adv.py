@@ -1,5 +1,6 @@
 from room import Room
-
+from player import Player
+from item import Item
 # Declare all the rooms
 
 room = {
@@ -18,7 +19,7 @@ to north. The smell of gold permeates the air."""),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""")
 }
 
 
@@ -33,11 +34,17 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+# Add items to room
+# room['outside'].items =
+
 #
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
+
+player = Player("Buddy", room['outside'])
+print(player.currentRoom)
 
 # Write a loop that:
 #
@@ -49,3 +56,32 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+directions = {
+    "n": "North",
+    "s": "South",
+    "e": "East",
+    "w": "West"
+}
+
+while True:
+    cmd = input("Please input n/s/e/w: ").split(" ")
+    if cmd[0] == "q":
+        print("Thank you for playing!")
+        break
+    elif cmd[0] in ("n", "s", "e", "w") and len(cmd) == 1:
+        player.travel(cmd[0])
+    elif cmd[0] == "add" and len(cmd) > 2:
+        item = cmd[1]
+        desc = cmd[2]
+        player.currentRoom.addItemToRoom(item, desc)
+    elif cmd[0] in ("take", "get") and len(cmd) > 1:
+        print(f"Hit here")
+        item = cmd[1]
+        player.addItemToPlayer(item)
+    elif cmd[0] in ("drop", "remove") and len(cmd) > 1:
+        item = cmd[1]
+        player.dropItemFromPlayer(item)
+    elif cmd[0] in ("i", "inventory") and len(cmd) == 1:
+        print(f"\nInventory: {[item.name for item in player.items]}\n")
+    else:
+        print("\nInvalid input, please try again.\n")
